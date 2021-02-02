@@ -18,6 +18,9 @@ def home_view(request, *args, **kwargs):
 
 
 def tweet_create_view(request, *args, **kwargs):
+    """
+    REST API CREATE VIEW (Django Rest Framework)
+    """
     user = request.user
     # check if user is signed in
     if not request.user.is_authenticated:
