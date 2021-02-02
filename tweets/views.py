@@ -27,6 +27,8 @@ def tweet_create_view(request, *args, **kwargs):
         obj = form.save(commit=False)
         # do other form-related logic
         obj.save()
+        if request.is_ajax():
+            return JsonResponse({}, status=201)
         if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
             return redirect(next_url)
         # re-initialize new blank form
