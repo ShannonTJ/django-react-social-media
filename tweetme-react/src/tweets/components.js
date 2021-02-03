@@ -31,14 +31,22 @@ export function Tweet(props) {
   const className = props.className
     ? props.className
     : "col-10 mx-auto col-md-6";
+
   return (
     <div className={className}>
       <p>
         {tweet.id} - {tweet.content}
       </p>
       <div className="btn btn-group">
-        <ActionBtn tweet={tweet} action={{ type: "like" }} />
-        <ActionBtn tweet={tweet} action={{ type: "unlike" }} />
+        <ActionBtn tweet={tweet} action={{ type: "like", display: "Likes" }} />
+        <ActionBtn
+          tweet={tweet}
+          action={{ type: "unlike", display: "Unlike" }}
+        />
+        <ActionBtn
+          tweet={tweet}
+          action={{ type: "retweet", display: "Retweet" }}
+        />
       </div>
     </div>
   );
@@ -50,9 +58,19 @@ export function ActionBtn(props) {
     ? props.className
     : "btn btn-primary btn-sm";
   const likeString = tweet.likes === 1 ? "like" : "likes";
-  return action.type === "like" ? (
-    <button className={className}>
-      {tweet.likes} {likeString}
+  const display =
+    action.type === "like" ? `${tweet.likes} ${likeString}` : action.display;
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (action.type === "like") {
+      console.log(tweet.likes + 1);
+    }
+  };
+
+  return (
+    <button className={className} onClick={handleClick}>
+      {display}
     </button>
-  ) : null;
+  );
 }
