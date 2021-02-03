@@ -1,5 +1,5 @@
 import React from "react";
-import { TweetsList } from "./tweets";
+import { TweetsComponent } from "./tweets";
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -9,7 +9,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <div>
-          <TweetsList />
+          <TweetsComponent />
         </div>
         <a
           className="App-link"
