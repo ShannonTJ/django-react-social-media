@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { loadTweets } from "../lookup";
 
 export function TweetsComponent(props) {
+  const [newTweets, setNewTweets] = useState([]);
   const textAreaRef = React.createRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newVal = textAreaRef.current.value;
-    console.log(newVal);
+    //dummy data
+    let tempTweets = [...newTweets];
+    tempTweets.unshift({ content: newVal, likes: 0, id: 1337 });
+    setNewTweets(tempTweets);
+    //clear text box
     textAreaRef.current.value = "";
   };
   return (
@@ -25,18 +30,27 @@ export function TweetsComponent(props) {
           </button>
         </form>
       </div>
-      <TweetsList />
+      <TweetsList newTweets={newTweets} />
     </div>
   );
 }
 
 export function TweetsList(props) {
+  const [tweetsInit, setTweetsInit] = useState([]);
   const [tweets, setTweets] = useState([]);
 
   useEffect(() => {
+    const final = [...props.newTweets].concat(tweetsInit);
+    if (final.length !== tweets.length) {
+      setTweets(final);
+    }
+  }, [props.newTweets, tweetsInit, tweets]);
+
+  //load tweets
+  useEffect(() => {
     const myCallback = (response, status) => {
       if (status === 200) {
-        setTweets(response);
+        setTweetsInit(response);
       } else {
         alert("There was an error.");
       }
