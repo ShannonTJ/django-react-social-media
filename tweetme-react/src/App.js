@@ -30,8 +30,25 @@ function Tweet(props) {
       <p>
         {tweet.id} - {tweet.content}
       </p>
+      <div className="btn btn-group">
+        <ActionBtn tweet={tweet} action={{ type: "like" }} />
+        <ActionBtn tweet={tweet} action={{ type: "unlike" }} />
+      </div>
     </div>
   );
+}
+
+function ActionBtn(props) {
+  const { tweet, action } = props;
+  const className = props.className
+    ? props.className
+    : "btn btn-primary btn-sm";
+  const likeString = tweet.likes === 1 ? "like" : "likes";
+  return action.type === "like" ? (
+    <button className={className}>
+      {tweet.likes} {likeString}
+    </button>
+  ) : null;
 }
 
 function App() {
