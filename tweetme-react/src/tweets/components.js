@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { apiTweetCreate, apiTweetList } from "./lookup";
+import { apiTweetCreate, apiTweetList, apiTweetAction } from "./lookup";
 
 export function TweetsComponent(props) {
   const [newTweets, setNewTweets] = useState([]);
@@ -112,25 +112,20 @@ export function Tweet(props) {
 export function ActionBtn(props) {
   const { tweet, action } = props;
   const [likes, setLikes] = useState(tweet.likes ? tweet.likes : 0);
-  const [userLike, setUserLike] = useState(
-    tweet.userLike === true ? true : false
-  );
 
   const className = props.className
     ? props.className
     : "btn btn-primary btn-sm";
 
+  const handleActionBackend = (response, status) => {
+    if (status === 200) {
+      setLikes(response.likes);
+    }
+  };
+
   const handleClick = (e) => {
     e.preventDefault();
-    if (action.type === "like") {
-      if (userLike === true) {
-        setLikes(likes - 1);
-        setUserLike(false);
-      } else {
-        setLikes(likes + 1);
-        setUserLike(true);
-      }
-    }
+    apiTweetAction(tweet.id, action.type, handleActionBackend);
   };
 
   const display =
