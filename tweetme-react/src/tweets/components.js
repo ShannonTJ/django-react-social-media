@@ -5,20 +5,23 @@ export function TweetsComponent(props) {
   const [newTweets, setNewTweets] = useState([]);
   const textAreaRef = React.createRef();
 
+  const updateBackend = (response, status) => {
+    //backend api response handler
+    let tempTweets = [...newTweets];
+    if (status === 201) {
+      tempTweets.unshift(response);
+      setNewTweets(tempTweets);
+    } else {
+      alert("An error occurred. Please try again.");
+    }
+  };
+
   const handleSubmit = (e) => {
+    //backend api request
     e.preventDefault();
     const newVal = textAreaRef.current.value;
-    //dummy data
-    let tempTweets = [...newTweets];
-    createTweet(newVal, (response, status) => {
-      if (status === 201) {
-        tempTweets.unshift(response);
-      } else {
-        alert("An error occurred. Please try again.");
-      }
-    });
+    createTweet(newVal, updateBackend);
 
-    setNewTweets(tempTweets);
     //clear text box
     textAreaRef.current.value = "";
   };
