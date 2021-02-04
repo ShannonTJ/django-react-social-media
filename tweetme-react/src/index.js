@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { TweetsComponent } from "./tweets";
+import { TweetsComponent, TweetDetailComponent } from "./tweets";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
@@ -15,6 +15,11 @@ const tweetsEl = document.getElementById("tweetme");
 if (tweetsEl) {
   ReactDOM.render(e(TweetsComponent, tweetsEl.dataset), tweetsEl);
 }
+
+const tweetDetailEl = document.querySelectorAll(".tweetme-detail");
+tweetDetailEl.forEach((container) => {
+  ReactDOM.render(e(TweetDetailComponent, container.dataset), container);
+});
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
