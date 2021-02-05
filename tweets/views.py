@@ -17,8 +17,22 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 
 def home_view(request, *args, **kwargs):
-    # return HttpResponse("<h1>Hello world</h1>")
-    return render(request, "pages/home.html", context={}, status=200)
+    username = None
+    if request.user.is_authenticated:
+        username = request.user.username
+    return render(request, "pages/home.html", context={"username": username}, status=200)
+
+
+def tweets_list_view(request, *args, **kwargs):
+    return render(request, "tweets/list.html")
+
+
+def tweets_detail_view(request, tweet_id, *args, **kwargs):
+    return render(request, "tweets/detail.html", context={"tweet_id": tweet_id})
+
+
+def tweets_profile_view(request, username, *args, **kwargs):
+    return render(request, "tweets/profile.html", context={"profile_username": username})
 
 
 @api_view(['POST'])  # http method of client is POST
