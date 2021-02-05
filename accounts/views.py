@@ -9,7 +9,12 @@ def login_view(request, *args, **kwargs):
         user_ = form.get_user()
         login(request, user_)
         return redirect("/")
-    return render(request, "accounts/login.html", {"form": form})
+    context = {
+        "form": form,
+        "btn_label": "Login",
+        "title": "Login"
+    }
+    return render(request, "accounts/auth.html", context)
 
 
 def logout_view(request, *args, **kwargs):
@@ -24,4 +29,9 @@ def registration_view(request, *args, **kwargs):
     if form.is_valid():
         print(form.cleaned_data)
         return redirect("/")
-    return render(request, "accounts/register.html", {"form": form})
+    context = {
+        "form": form,
+        "btn_label": "Register",
+        "title": "Register"
+    }
+    return render(request, "accounts/auth.html", context)
