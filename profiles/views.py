@@ -16,4 +16,4 @@ def profile_detail_view(request, username, *args, **kwargs):
         "username": username,
         "profile": profile_obj
     }
-    return render(request, "profiles/detail.html", context
+    return render(request, "profiles/detail.html", context)
