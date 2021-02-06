@@ -21,11 +21,15 @@ class TweetActionSerializer(serializers.Serializer):
 
 
 class TweetCreateSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Tweet
-        fields = ['id', 'content', 'likes']
+        fields = ['user', 'id', 'content', 'likes', 'timestamp']
+
+    def get_user(self, obj):
+        return obj.user.id
 
     def get_likes(self, obj):
         return obj.likes.count()
@@ -37,12 +41,17 @@ class TweetCreateSerializer(serializers.ModelSerializer):
 
 
 class TweetSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
     parent = TweetCreateSerializer(read_only=True)
 
     class Meta:
         model = Tweet
-        fields = ['id', 'content', 'likes', 'is_retweet', 'parent']
+        fields = ['user', 'id', 'content', 'likes',
+                  'is_retweet', 'parent', 'timestamp']
+
+    def get_user(self, obj):
+        return obj.user.id
 
     def get_likes(self, obj):
         return obj.likes.count()
