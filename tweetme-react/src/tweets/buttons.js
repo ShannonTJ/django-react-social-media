@@ -22,7 +22,7 @@ export function ActionBtn(props) {
 
   const display =
     action.type === "like"
-      ? `${likes} ${likes === 1 ? "like" : "likes"}`
+      ? `${likes} ${likes === 1 ? "Like" : "Likes"}`
       : action.display;
 
   return (
