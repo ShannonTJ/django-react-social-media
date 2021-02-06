@@ -1,7 +1,7 @@
 from django.test import TestCase
-
-# Create your tests here.
+from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
+
 from .models import Profile
 
 User = get_user_model()
@@ -13,6 +13,11 @@ class ProfileTestCase(TestCase):
             username="abc", password="somepassword")
         self.user2 = User.objects.create_user(
             username="abc2", password="somepassword2")
+
+    def get_client(self):
+        client = APIClient()
+        client.login(username=self.user.username, password="somepassword")
+        return client
 
     def test_profile_created_via_signal(self):
         qs = Profile.objects.all()
@@ -30,3 +35,26 @@ class ProfileTestCase(TestCase):
         # check new user is not following anyone
         first_user_following_none = first.following.all()
         self.assertFalse(first_user_following_none.exists())
+
+    def test_follow_api_endpoint(self):
+        client = self.get_client()
+        response = client.post(
+            f"/api/profiles/{self.user2.username}/follow/",
+            {"action": "follow"}
+        )
+        r_data = response.json()
+        count = r_data.get("count")
+        self.assertEqual(count, 1)
+
+    def test_unfollow_api_endpoint(self):
+        first = self.user
+        second = self.user2
+        first.profile.followers.add(second)
+        client = self.get_client()
+        response = client.post(
+            f"/api/profiles/{self.user2.username}/follow/",
+            {"action": "unfollow"}
+        )
+        r_data = response.json()
+        count = r_data.get("count")
+        self.assertEqual(count, 0)
