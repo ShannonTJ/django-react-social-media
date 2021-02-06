@@ -5,12 +5,7 @@ export function ParentTweet(props) {
   const { tweet } = props;
 
   return tweet.parent ? (
-    <div className="row">
-      <div className="col-11 mx-auto p-3 border rounded">
-        <p className="mb-0 text-muted small">Retweet</p>
-        <Tweet hideActions className={" "} tweet={tweet.parent} />
-      </div>
-    </div>
+    <Tweet isRetweet hideActions className={" "} tweet={tweet.parent} />
   ) : null;
 }
 
@@ -18,7 +13,7 @@ export function Tweet(props) {
   const [actionTweet, setActionTweet] = useState(
     props.tweet ? props.tweet : null
   );
-  const { tweet, didRetweet, hideActions } = props;
+  const { tweet, didRetweet, hideActions, isRetweet } = props;
   const className = props.className
     ? props.className
     : "col-10 mx-auto col-md-6";
@@ -46,42 +41,58 @@ export function Tweet(props) {
 
   return (
     <div className={className}>
-      <div>
-        <p>
-          {tweet.id} - {tweet.content}
-        </p>
-        <ParentTweet tweet={tweet} />
-      </div>
+      {isRetweet === true && (
+        <div className="mb-2">
+          <span className="small text-muted">Retweet</span>
+        </div>
+      )}
+      <div className="d-flex">
+        <div className="">
+          <span className="mx-1 px-3 py-2 rounded-circle bg-dark text-white">
+            {tweet.user.username[0]}
+          </span>
+        </div>
+        <div className="col-11">
+          <div>
+            <p>
+              {tweet.user.first_name} {tweet.user.last_name} @
+              {tweet.user.username}
+            </p>
+            <p>{tweet.content}</p>
+            <ParentTweet tweet={tweet} />
+          </div>
 
-      <div className="btn btn-group">
-        {actionTweet && hideActions !== true && (
-          <React.Fragment>
-            <ActionBtn
-              tweet={actionTweet}
-              didPerformAction={handlePerformAction}
-              action={{ type: "like", display: "Likes" }}
-            />
-            <ActionBtn
-              tweet={actionTweet}
-              didPerformAction={handlePerformAction}
-              action={{ type: "unlike", display: "Unlike" }}
-            />
-            <ActionBtn
-              tweet={actionTweet}
-              didPerformAction={handlePerformAction}
-              action={{ type: "retweet", display: "Retweet" }}
-            />
-          </React.Fragment>
-        )}
+          <div className="btn btn-group px-0">
+            {actionTweet && hideActions !== true && (
+              <React.Fragment>
+                <ActionBtn
+                  tweet={actionTweet}
+                  didPerformAction={handlePerformAction}
+                  action={{ type: "like", display: "Likes" }}
+                />
+                <ActionBtn
+                  tweet={actionTweet}
+                  didPerformAction={handlePerformAction}
+                  action={{ type: "unlike", display: "Unlike" }}
+                />
+                <ActionBtn
+                  tweet={actionTweet}
+                  didPerformAction={handlePerformAction}
+                  action={{ type: "retweet", display: "Retweet" }}
+                />
+              </React.Fragment>
+            )}
 
-        {isDetail === true ? null : (
-          <button
-            className="btn btn-outline-primary btn-sm"
-            onClick={handleLink}
-          >
-            View
-          </button>
-        )}
+            {isDetail === true ? null : (
+              <button
+                className="btn btn-outline-primary btn-sm"
+                onClick={handleLink}
+              >
+                View
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
