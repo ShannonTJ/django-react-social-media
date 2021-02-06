@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { UserPicture, UserDisplay } from "../profiles";
+
 import { ActionBtn } from "./buttons";
+
+import { UserDisplay, UserPicture } from "../profiles";
 
 export function ParentTweet(props) {
   const { tweet } = props;
-
   return tweet.parent ? (
     <Tweet
       isRetweet
@@ -15,29 +16,26 @@ export function ParentTweet(props) {
     />
   ) : null;
 }
-
 export function Tweet(props) {
+  const { tweet, didRetweet, hideActions, isRetweet, retweeter } = props;
   const [actionTweet, setActionTweet] = useState(
     props.tweet ? props.tweet : null
   );
-  const { tweet, didRetweet, hideActions, isRetweet, retweeter } = props;
   let className = props.className ? props.className : "col-10 mx-auto col-md-6";
   className =
     isRetweet === true ? `${className} p-2 border rounded` : className;
   const path = window.location.pathname;
   const match = path.match(/(?<tweetid>\d+)/);
   const urlTweetId = match ? match.groups.tweetid : -1;
-
   const isDetail = `${tweet.id}` === `${urlTweetId}`;
 
-  const handleLink = (e) => {
-    e.preventDefault();
+  const handleLink = (event) => {
+    event.preventDefault();
     window.location.href = `/${tweet.id}`;
   };
-
   const handlePerformAction = (newActionTweet, status) => {
     if (status === 200) {
-      setActionTweet(newActionTweet, status);
+      setActionTweet(newActionTweet);
     } else if (status === 201) {
       if (didRetweet) {
         didRetweet(newActionTweet);
@@ -50,7 +48,7 @@ export function Tweet(props) {
       {isRetweet === true && (
         <div className="mb-2">
           <span className="small text-muted">
-            Retweeted from <UserDisplay user={retweeter} />
+            Retweet via <UserDisplay user={retweeter} />
           </span>
         </div>
       )}
@@ -64,9 +62,9 @@ export function Tweet(props) {
               <UserDisplay includeFullName user={tweet.user} />
             </p>
             <p>{tweet.content}</p>
+
             <ParentTweet tweet={tweet} retweeter={tweet.user} />
           </div>
-
           <div className="btn btn-group px-0">
             {actionTweet && hideActions !== true && (
               <React.Fragment>
@@ -87,7 +85,6 @@ export function Tweet(props) {
                 />
               </React.Fragment>
             )}
-
             {isDetail === true ? null : (
               <button
                 className="btn btn-outline-primary btn-sm"

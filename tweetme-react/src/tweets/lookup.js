@@ -5,14 +5,20 @@ export function apiTweetCreate(newTweet, callback) {
 }
 
 export function apiTweetAction(tweetId, action, callback) {
-  backendLookup("POST", "/tweets/action/", callback, {
-    id: tweetId,
-    action: action,
-  });
+  const data = { id: tweetId, action: action };
+  backendLookup("POST", "/tweets/action/", callback, data);
 }
 
 export function apiTweetDetail(tweetId, callback) {
-  backendLookup("GET", `/tweets/${tweetId}`, callback);
+  backendLookup("GET", `/tweets/${tweetId}/`, callback);
+}
+
+export function apiTweetFeed(callback, nextUrl) {
+  let endpoint = "/tweets/feed/";
+  if (nextUrl !== null && nextUrl !== undefined) {
+    endpoint = nextUrl.replace("http://localhost:8000/api", "");
+  }
+  backendLookup("GET", endpoint, callback);
 }
 
 export function apiTweetList(username, callback, nextUrl) {
