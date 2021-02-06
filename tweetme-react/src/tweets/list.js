@@ -5,6 +5,7 @@ import { Tweet } from "./detail";
 export function TweetsList(props) {
   const [tweetsInit, setTweetsInit] = useState([]);
   const [tweets, setTweets] = useState([]);
+  const [nextUrl, setNextUrl] = useState(null);
   const [tweetsDidSet, setTweetsDidSet] = useState(false);
 
   useEffect(() => {
@@ -19,7 +20,8 @@ export function TweetsList(props) {
     if (tweetsDidSet === false) {
       const handleListLookup = (response, status) => {
         if (status === 200) {
-          setTweetsInit(response);
+          setNextUrl(response.next);
+          setTweetsInit(response.results);
           setTweetsDidSet(true);
         } else {
           alert("There was an error.");
@@ -39,14 +41,22 @@ export function TweetsList(props) {
     setTweets(updatedFinalTweets);
   };
 
-  return tweets.map((item, index) => {
-    return (
-      <Tweet
-        tweet={item}
-        didRetweet={handleDidRetweet}
-        key={`${index}-${item.id}`}
-        className="my-5 py-5 border bg-white text-dark"
-      />
-    );
-  });
+  return (
+    <React.Fragment>
+      {tweets.map((item, index) => {
+        return (
+          <Tweet
+            tweet={item}
+            didRetweet={handleDidRetweet}
+            key={`${index}-${item.id}`}
+            className="my-5 py-5 border bg-white text-dark"
+          />
+        );
+      })}
+      ;
+      {nextUrl !== null && (
+        <button className="btn btn-outline-primary">Next Page</button>
+      )}
+    </React.Fragment>
+  );
 }
