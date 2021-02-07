@@ -1,3 +1,2 @@
-
-web: gunicorn tweetme.wsgi 
+web: gunicorn tweetme.wsgi --log-file -
 web: python manage.py runserver
