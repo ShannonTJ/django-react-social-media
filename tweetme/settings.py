@@ -27,7 +27,8 @@ SECRET_KEY = '^px0$i9!fn4_3dnp3ix28i+&t$)qkoa)7x!3&1e#py3$b06$+z'
 DEBUG = True
 
 # update parameter for heroku
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost",
+                 "https://shan-django-react-social-media.herokuapp.com"]
 LOGIN_URL = "/login"
 
 MAX_TWEET_LENGTH = 240
