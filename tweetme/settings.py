@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import django_heroku
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,7 +28,7 @@ DEBUG = True
 
 # update parameter for heroku
 ALLOWED_HOSTS = ["127.0.0.1", "localhost",
-                 "shan-django-react-social-media.herokuapp.com"]
+                 "shan-django-react-social-media.herokuapp.com", "https://shan-django-react-social-media.herokuapp.com"]
 LOGIN_URL = "/login"
 
 MAX_TWEET_LENGTH = 240
@@ -158,3 +158,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
 }
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
