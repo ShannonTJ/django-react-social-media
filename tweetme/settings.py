@@ -31,8 +31,7 @@ DEBUG = False
 
 
 # update parameter for heroku
-ALLOWED_HOSTS = ["127.0.0.1", "localhost",
-                 "shan-django-react-social-media.herokuapp.com", "https://shan-django-react-social-media.herokuapp.com"]
+ALLOWED_HOSTS = '*'
 LOGIN_URL = "/login"
 
 MAX_TWEET_LENGTH = 240
