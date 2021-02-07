@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { apiProfileDetail, apiProfileFollowToggle } from "./lookup";
 import { UserDisplay, UserPicture } from "./components";
+import { DisplayCount } from "./utils";
 
 function ProfileBadge(props) {
   const { user, didFollowToggle, profileLoading } = props;
@@ -20,6 +21,15 @@ function ProfileBadge(props) {
       <p>
         <UserDisplay user={user} includeFullName hideLink />
       </p>
+      <p>
+        <DisplayCount>{user.follower_count}</DisplayCount>{" "}
+        {user.follower_count === 1 ? "follower" : "followers"}
+      </p>
+      <p>
+        <DisplayCount>{user.following_count}</DisplayCount> following
+      </p>
+      <p>{user.location}</p>
+      <p>{user.bio}</p>
       <button onClick={handleFollowToggle} className="btn btn-primary">
         {action}
       </button>
@@ -29,11 +39,10 @@ function ProfileBadge(props) {
 
 export function ProfileBadgeComponent(props) {
   const { username } = props;
-
+  // lookup
   const [didLookup, setDidLookup] = useState(false);
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(false);
-
   const handleBackendLookup = (response, status) => {
     if (status === 200) {
       setProfile(response);
@@ -46,8 +55,8 @@ export function ProfileBadgeComponent(props) {
     }
   }, [username, didLookup, setDidLookup]);
 
-  const handleNewFollow = (action) => {
-    apiProfileFollowToggle(username, action, (response, status) => {
+  const handleNewFollow = (actionVerb) => {
+    apiProfileFollowToggle(username, actionVerb, (response, status) => {
       if (status === 200) {
         setProfile(response);
       }
@@ -55,7 +64,6 @@ export function ProfileBadgeComponent(props) {
     });
     setProfileLoading(true);
   };
-
   return didLookup === false ? (
     "Loading..."
   ) : profile ? (
