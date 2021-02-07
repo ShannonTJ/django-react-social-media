@@ -1,2 +1,2 @@
 web: gunicorn tweetme.wsgi --log-file -
-web: python manage.py runserver $PORT
+web: python manage.py runserver 0.0.0.0:$PORT
