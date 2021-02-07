@@ -30,6 +30,7 @@ export function apiTweetList(username, callback, nextUrl) {
     endpoint = `/tweets/?username=${username}`;
   }
   if (nextUrl !== null && nextUrl !== undefined) {
+    console.log(nextUrl);
     endpoint = nextUrl.replace(
       "https://shan-django-react-social-media.herokuapp.com/api",
       ""
