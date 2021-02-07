@@ -29,7 +29,6 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 def user_follow_view(request, username, *args, **kwargs):
     me = request.user
     other_user_qs = User.objects.filter(username=username)
-
     if me.username == username:
         my_followers = me.profile.followers.all()
         return Response({"count": my_followers.count()}, status=200)
@@ -38,7 +37,6 @@ def user_follow_view(request, username, *args, **kwargs):
     other = other_user_qs.first()
     profile = other.profile
     data = request.data or {}
-
     action = data.get("action")
     if action == "follow":
         profile.followers.add(me)
@@ -46,8 +44,9 @@ def user_follow_view(request, username, *args, **kwargs):
         profile.followers.remove(me)
     else:
         pass
-    current_followers_qs = profile.followers.all()
-    return Response({"count": current_followers_qs.count()}, status=200)
+    data = PublicProfileSerializer(
+        instance=profile, context={"request": request})
+    return Response(data.data, status=200)
 
 
 @api_view(['GET'])
