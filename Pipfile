@@ -4,14 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "==2.2"
-django-heroku = "==0.3.1"
-gunicorn = "==19.8.1"
+django = "*"
+gunicorn = "*"
+django-heroku = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
 
 [dev-packages]
-pylint="*"
 
 [requires]
 python_version = "3.7"
